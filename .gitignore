@@ -13,3 +13,9 @@
 
 # ignore mac finder cache
 .DS_Store
+
+# ignore all pics
+*.png
+
+# ignore all txt
+*.txt
