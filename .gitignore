@@ -7,15 +7,12 @@
 # unignore all directories
 !*/
 
+#ignore build
+build/
+
 # ignore all with .o extensions
 *.o
 */*.o
 
 # ignore mac finder cache
 .DS_Store
-
-# ignore all pics
-*.png
-
-# ignore all txt
-*.txt
