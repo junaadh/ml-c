@@ -24,6 +24,7 @@ typedef struct {
   size_t rows;
   // number of cols in matrix
   size_t cols;
+  size_t stride;
   // pointer to the start of matrix
   float *es;
 } Mat;
@@ -37,6 +38,8 @@ float sigmoidf(float x);
 
 Mat mat_alloc(size_t rows, size_t cols);
 void mat_rand(Mat m, float low, float high);
+Mat mat_row(Mat m, size_t row);
+void mat_copy(Mat dest, Mat src);
 void mat_dot(Mat dest, Mat a, Mat b);
 void mat_sum(Mat dest, Mat a);
 void mat_print(Mat m, const char *name);
@@ -44,7 +47,7 @@ void mat_fill(Mat m, float x);
 void mat_sig(Mat m);
 
 // matrix value at MAT_AT(source, rows, cols)
-#define MAT_AT(m, i, j) (m).es[(i) * (m).cols + (j)]
+#define MAT_AT(m, i, j) (m).es[(i) * (m).stride + (j)]
 // takes in a matrix and prints formated print statement
 #define MAT_PRINT(m) mat_print(m, #m)
 
@@ -65,6 +68,7 @@ Mat mat_alloc(size_t rows, size_t cols) {
   Mat m;
   m.rows = rows;
   m.cols = cols;
+  m.stride = cols;
   m.es = ARS_MALLOC(sizeof(*m.es) * rows * cols);
   ARS_ASSERT(m.es != NULL);
   return m;
@@ -76,6 +80,25 @@ void mat_rand(Mat m, float low, float high) {
   for (size_t i = 0; i < m.rows; ++i) {
     for (size_t j = 0; j < m.cols; ++j) {
       MAT_AT(m, i, j) = rand_float() * (high - low) + low;
+    }
+  }
+}
+
+Mat mat_row(Mat m, size_t row) {
+  return (Mat){
+      .rows = 1,
+      .cols = m.cols,
+      .stride = m.stride,
+      .es = &MAT_AT(m, row, 0),
+  };
+}
+
+void mat_copy(Mat dest, Mat src) {
+  ARS_ASSERT(dest.rows == src.rows);
+  ARS_ASSERT(dest.cols == src.cols);
+  for (size_t i = 0; i < dest.rows; ++i) {
+    for (size_t j = 0; j < dest.cols; ++j) {
+      MAT_AT(dest, i, j) = MAT_AT(src, i, j);
     }
   }
 }
