@@ -6,6 +6,7 @@
 #define ARS_IMPLEMENTATION
 #include "ars.h"
 
+// structure containing data set and accompanying data
 typedef struct {
   size_t rows;
   size_t cols;
@@ -71,7 +72,7 @@ int main(void) {
   // set the randomizing token
   srand(time(0));
 
-  train_set_t *td = &td_nand;
+  train_set_t *td = &td_and;
 
   // set epselon and rate for learning
   float eps = 1e-1;
