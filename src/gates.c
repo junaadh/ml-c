@@ -81,6 +81,8 @@ int main(void) {
   // the stride at which you want to form a  submatrix
   size_t stride = 3;
   // the number of rows in the training data set
+  // changed calculation method from using sizeof beacuse sizeof * is not
+  // accurate thus introduced type train_set_t with meta data
 
   // sub matrix of only training data inputs
   Mat ti = {.rows = td->rows, .cols = 2, .stride = stride, .es = td->data};
@@ -93,7 +95,7 @@ int main(void) {
   // data
   size_t arch[] = {
       2,
-      2,
+      10,
       10,
       1,
   };
@@ -116,6 +118,7 @@ int main(void) {
     printf("%zu: cost = %f\n", i, net_cost(net, ti, to));
 #endif
   }
+  NET_PRINT(net);
 
 // make 0 if dont wanna see the test case
 #if 1

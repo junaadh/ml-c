@@ -14,5 +14,11 @@ build/
 *.o
 */*.o
 
+#ignore all latex unnecessary ext
+*.log
+*/*.log
+*.aux
+*/*.aux
+
 # ignore mac finder cache
 .DS_Store
