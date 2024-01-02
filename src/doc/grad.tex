@@ -1,13 +1,77 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{tikz}
 
 \begin{document}
 
 \section{Gradient Descent}
+\def\avgsum[#1,#2]{\frac{1}{#2}\sum_{#1=1}^{#2}}
 
 \begin{align}
 	C'(w) = \lim_{\epsilon \to 0}\frac{C(w + \epsilon) - C(w)}{\epsilon}
+\end{align}
+
+\subsection{``Double``}
+
+\begin{align}
+	C(w)  &= \avgsum[i,n](x_iw - y_i)^2 \\  
+	C'(w) &= \left(\avgsum[1,n](x_iw - y_i)^2\right)' \\
+		  &= \frac{1}{n}\left(\sum_{i=1}^{n}(x_iw - y_i)^2\right)' \\
+		  &= \frac{1}{n}\left((x_0w - y_0)^2 + (x_1w - y_1)^2 + \hdots+(x_nw - y_n)^2\right)' \\
+		  &= \avgsum[1,n]\left((x_iw - y_i)^2\right)' \\
+		  &= \avgsum[1,n]2(x_iw - y_i)\left(x_iw - y_i\right)' \\
+		  &= \avgsum[1,n]2(x_iw - y_i)\left(x_iw\right)' \\
+		  &= \avgsum[1,n]2(x_iw - y_i)x_i' \\
+\end{align}
+
+\begin{align}
+	C(w)  &= \avgsum[1,n](x_iw - y_i)^2 \\  
+	C'(w) &= \avgsum[1,n]2(x_iw - y_i)x_i' \\
+\end{align}
+
+\subsection{One neuron model}
+
+\def\d{1.5}
+
+\begin{center}
+	\begin{tikzpicture}
+		\node (X) at (-\d, 0) {$x$};
+		\node[shape=circle,draw=black] (N) at (0,0) {$\sigma, w, b$};
+		\node at (\d, 0) (Y) {$y$};
+		\path[->] (X) edge (N);
+		\path[->] (N) edge (Y);
+	\end{tikzpicture}
+\end{center}
+
+\begin{align}
+	y &= \sigma(xw + b) \\
+	\sigma(x) &= \frac{1}{1 + e^{-x}} \\
+	\sigma'(x) &= \sigma(x)(1 - \sigma(x)) \\
+\end{align}
+
+\subsubsection{Cost}
+
+\def\pd[#1]{\partial_{#1}}
+
+\begin{align}
+	a_i &= \sigma(x_iw + b) \\
+	\pd[w]a_i 
+		&= \pd[w]\left(\sigma(x_iw + b)\right) \\
+		&= a_i(1 - a_i)\pd[w](x_iw + b) \\
+		&= a_i(1 - a_i)x_i \\
+	\pd[b]a_i 
+		&= a_i(1 - a_i) \\
+	C &= \avgsum[i,n](a_i - y_i)^2 \\
+	\pd[w]C 
+		&= \pd[w]\left(\avgsum[i,n](a_i - y_i)^2\right) \\
+		&= \avgsum[i,n]\pd[w]\left((a_i - y_i)^2\right) \\
+		&= \avgsum[i,n]2(a_i - y_i)\pd[w]\left(a_i - y_i\right) \\
+		&= \avgsum[i,n]2(a_i - y_i)\pd[w]a_i \\
+		&= \avgsum[i,n]2(a_i - y_i)(a_i(1 - a_i)x_i) \\
+	\pd[b]C 
+		&= \avgsum[i,n]2(a_i - y_i)\pd[b]a_i \\
+		&= \avgsum[i,n]2(a_i - y_i)(a_i(1 - a_i)) \\
 \end{align}
 
 \end{document}
