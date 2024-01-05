@@ -126,14 +126,27 @@
 
 \begin{center}
 	\begin{tikzpicture}
-		\node (X) at (-\d, 0) {$x$};
-		\node[shape=circle,draw=black] (N) at (0,0) {$\sigma, w, b$};
-		\node[shape=circle,draw=black] (O) at (\d,0) {$\sigma, w, b$};
-		\node at (2*\d, 0) (Y) {$y$};
-		\path[->] (X) edge (N);
-		\path[->] (N) edge (O);
-		\path[->] (O) edge (Y);
+		\node (X) at (-\d, 0) {$a^{(0)}$};
+		\node[shape=circle,draw=black] (N1) at (0,0) {$\sigma, b^{(1)}$};
+		\node[shape=circle,draw=black] (N2) at (1.5*\d,0) {$\sigma, b^{(2)}$};
+		\node at (2.5*\d, 0) (Y) {$a^{(2)}$};
+		\path[->] (X) edge node[above] {$w_1$} (N1);
+		\path[->] (N1) edge node[above] {$w_2$} (N2);
+		\path[->] (N2) edge (Y);
 	\end{tikzpicture}
 \end{center}
+
+\begin{align}
+	a^{(1)} &= \sigma\left(a^{(0)}w^{(1)} + b^{(1)}\right) \\	
+	a^{(2)} &= \sigma\left(a^{(1)}w^{(2)} + b^{(2)}\right) \\
+\end{align}
+
+\subsubsection{Cost}
+
+\begin{align}
+	a_i^{(1)} &= \sigma\left(a_i^{(0)}w^{(1)} + b^{(1)}\right) \\	
+	a_i^{(2)} &= \sigma\left(a_i^{(1)}w^{(2)} + b^{(2)}\right) \\
+	C &= \avgsum[i, n] (a^{(2)}) \\
+\end{align}
 
 \end{document}
