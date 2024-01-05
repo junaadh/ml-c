@@ -122,4 +122,18 @@
 		&= \avgsum[i,n]2(a_i - z_i)(a_i(1 - a_i)) \\
 \end{align}
 
+\subsection{Two Neuron Model with 1 input}
+
+\begin{center}
+	\begin{tikzpicture}
+		\node (X) at (-\d, 0) {$x$};
+		\node[shape=circle,draw=black] (N) at (0,0) {$\sigma, w, b$};
+		\node[shape=circle,draw=black] (O) at (\d,0) {$\sigma, w, b$};
+		\node at (2*\d, 0) (Y) {$y$};
+		\path[->] (X) edge (N);
+		\path[->] (N) edge (O);
+		\path[->] (O) edge (Y);
+	\end{tikzpicture}
+\end{center}
+
 \end{document}
