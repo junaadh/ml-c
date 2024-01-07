@@ -146,7 +146,35 @@
 \begin{align}
 	a_i^{(1)} &= \sigma\left(a_i^{(0)}w^{(1)} + b^{(1)}\right) \\	
 	a_i^{(2)} &= \sigma\left(a_i^{(1)}w^{(2)} + b^{(2)}\right) \\
-	C &= \avgsum[i, n] (a^{(2)}) \\
+	\pd[w^{(2)}]a_i^{(2)} 
+		&= \pd[w^{(2)}] \sigma\left(a_i^{(1)}w^{(2)} + b^{(2)}\right) \\	
+		&= a_i^{(2)}(1 - a_i^{(2)}) \pd[w^{(2)}] \left(a_i^{(1)}w^{(2)} + b^{(2)}\right) \\	
+		&= a_i^{(2)}(1 - a_i^{(2)}) a_i^{(1)} \\	
+	\pd[b^{(2)}]a_i^{(2)} 
+		&= a_i^{(2)}(1 - a_i^{(2)}) \\	
+	\pd[a^{(1)}]a_i^{(2)} 
+		&= a_i^{(2)}(1 - a_i^{(2)})w^{(2)} \\	
+	C^(2) &= \avgsum[i, n] (a_i^{(2)} - y_i)^2 \\
+	\pd[w^{(2)}]C^(2)  
+		&= \avgsum[i, n] pd[w^{(2)}](a_i^{(2)} - y_i)^2 \\
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) \pd[w^{(2)}]a_i^{(2)} \\
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) a_i^{(1)} \\
+	\pd[b^{(2)}]C^(2)  
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) \\
+	\pd[a^{(1)}]C^(2)  
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) w^{(2)} \\
+	e_i &= a_i^{(1)} - \pd[a_i^{(1)}]C^{(2)} \\
+	C^(1) &= \avgsum[i, n] (a_i^{(1)} - e_i)^2 \\
+	\pd[w^{(1)}]C^(1)  
+		&= \pd[w^{(1)}]\left(\avgsum[i, n] (a_i^{(1)} - e_i)^2\right) \\
+		&= \avgsum[i, n] \pd[w^{(1)}]\left((a_i^{(1)} - e_i)^2\right) \\
+		&= \avgsum[i, n] 2(a_i^{(1)} - e_i)\pd[w^{(1)}](a_i^{(1)} - e_i) \\
+		&= \avgsum[i, n] 2(a_i^{(1)} - e_i)\pd[w^{(1)}]a_i^{(1)} \\
+		&= \avgsum[i, n] 2(a_i^{(1)} - (a_i^{(1)} - \pd[a_i^{(1)}]C^{(2)}))\pd[w^{(1)}]a_i^{(1)} \\
+		&= \avgsum[i, n] 2(a_i^{(1)} - a_i^{(1)} + \pd[a_i^{(1)}]C^{(2)})\pd[w^{(1)}]a_i^{(1)} \\
+		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)})\pd[w^{(1)}]a_i^{(1)} \\
+	\pd[b^{(1)}]C^(1)  
+		&= \\
 \end{align}
 
 \end{document}
