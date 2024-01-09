@@ -70,13 +70,10 @@ train_set_t td_nor = {
 
 int main(void) {
   // set the randomizing token
-  srand(time(0));
+  // srand(time(0));
+  srand(69);
 
   train_set_t *td = &td_and;
-
-  // set epselon and rate for learning
-  float eps = 1e-1;
-  float rate = 1e-1;
 
   // the stride at which you want to form a  submatrix
   size_t stride = 3;
@@ -95,8 +92,7 @@ int main(void) {
   // data
   size_t arch[] = {
       2,
-      10,
-      10,
+      2,
       1,
   };
 
@@ -110,15 +106,24 @@ int main(void) {
 
   // printing the cost as the network learns
   printf("\ninitial cost = %f\n", net_cost(net, ti, to));
-  for (size_t i = 0; i < 100 * 1000; ++i) {
+  for (size_t i = 0; i < 1; ++i) {
+#if 1
+    // set epselon and rate for learning
+    float eps = 1e-1;
+    float rate = 1e-1;
+
     net_diff(net, grad, eps, ti, to);
-    net_learn(net, grad, rate);
+    // net_learn(net, grad, rate);
+#else
+    net_bpropagate(net, grad, ti, to);
+#endif
+    NET_PRINT(grad);
 // make if 0 if want to disable tracing
 #if 1
     printf("%zu: cost = %f\n", i, net_cost(net, ti, to));
 #endif
   }
-  NET_PRINT(net);
+  // NET_PRINT(net);
 
 // make 0 if dont wanna see the test case
 #if 1

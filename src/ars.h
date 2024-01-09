@@ -78,6 +78,7 @@ void net_rand(Net net, float low, float high);
 void net_forward(Net net);
 float net_cost(Net net, Mat ti, Mat to);
 void net_diff(Net net, Net grad, float eps, Mat ti, Mat to);
+void net_bpropagate(Net net, Net grad, Mat ti, Mat to);
 void net_learn(Net net, Net grad, float rate);
 
 #endif // ARS_H_
@@ -290,6 +291,55 @@ void net_diff(Net net, Net grad, float eps, Mat ti, Mat to) {
         MAT_AT(net.bs[i], j, k) += eps;
         MAT_AT(grad.bs[i], j, k) = (net_cost(net, ti, to) - c) / eps;
         MAT_AT(net.bs[i], j, k) = saved;
+      }
+    }
+  }
+}
+
+void net_bpropagate(Net net, Net grad, Mat ti, Mat to) {
+  ARS_ASSERT(ti.rows == to.rows);
+  size_t n = ti.rows;
+  ARS_ASSERT(NET_OUTPUT(net).cols == to.cols);
+
+  // i - current sample
+  // l - current layer
+  // j - current activation
+  // k - previous activation
+
+  for (size_t i = 0; i < n; ++i) {
+    mat_copy(NET_INPUT(net), mat_row(ti, i));
+    net_forward(net);
+    for (size_t j = 0; j < to.cols; ++j) {
+      MAT_AT(NET_OUTPUT(grad), 0, j) =
+          MAT_AT(NET_OUTPUT(net), 0, j) - MAT_AT(to, i, j);
+    }
+
+    for (size_t l = net.count; l > 0; --l) {
+      for (size_t j = 0; j < net.as[l].cols; ++j) {
+        float a = MAT_AT(net.as[l], 0, j);
+        float da = MAT_AT(grad.as[l], 0, j);
+        MAT_AT(grad.bs[l - 1], 0, j) += 2 * da * a * (1 - a);
+        for (size_t k = 0; k < net.as[l - 1].cols; ++k) {
+          // k - weight matrix col
+          // j - weight matrix row
+          float pa = MAT_AT(net.as[l - 1], 0, k);
+          float w = MAT_AT(net.ws[l - 1], k, j);
+          MAT_AT(grad.ws[l - 1], k, j) += 2 * da * a * (1 - a) * pa;
+          MAT_AT(grad.as[l - 1], 0, k) += 2 * da * a * (1 - a) * w;
+        }
+      }
+    }
+  }
+
+  for (size_t i = 0; i < grad.count; ++i) {
+    for (size_t j = 0; j < grad.ws[i].rows; ++j) {
+      for (size_t k = 0; k < grad.ws[i].cols; ++k) {
+        MAT_AT(grad.ws[i], j, k) /= n;
+      }
+    }
+    for (size_t j = 0; j < grad.bs[i].rows; ++j) {
+      for (size_t k = 0; k < grad.bs[i].cols; ++k) {
+        MAT_AT(grad.bs[i], j, k) /= n;
       }
     }
   }

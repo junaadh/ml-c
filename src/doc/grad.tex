@@ -212,11 +212,11 @@ Assume $a_i^{(m)} - y_i$ is $\pd[a^{(m)}]C^{(m+1)}$
 \begin{align}
 	C^{(l)} &= \avgsum[i, n] (a_i^{(l)} - (a_i^{(l)} - \pd[a_i^{(l)}]C^{(l+1)}))^2 \\
 	\pd[w^{(l)}]C^{(l)}  
-		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) a_i^{(0)} \\
+		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) a_i^{(l)}(1 - a_i^{(l)}) a_i^{(l-1)} \\
 	\pd[b^{(l)}]C^{(l)}  
-		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) \\
-	\pd[a^{(l-1)}]C^{(2)}  
-		&= \avgsum[i, n] 2(a_i^{(l)} - y_i) a_i^{(l)}(1 - a_i^{(l)}) w^{(l)} \\
+		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) a_i^{(l)}(1 - a_i^{(l)}) \\
+	\pd[a^{(l-1)}]C^{(l)}  
+		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) a_i^{(l)}(1 - a_i^{(l)}) w^{(l)} \\
 \end{align}
 
 \end{document}
