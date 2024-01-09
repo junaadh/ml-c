@@ -189,6 +189,8 @@
 
 \subsection{Arbitrary Neurons Model with 1 input}
 
+Assume we have $m$ no of layers.
+
 \subsubsection{Feed-Forward}
 
 Assuming $a_i^{(0)}$ = $x_i$
@@ -205,19 +207,16 @@ Assuming $a_i^{(0)}$ = $x_i$
 
 \subsubsection{Back-Propagation}
 
+Assume $a_i^{(m)} - y_i$ is $\pd[a^{(m)}]C^{(m+1)}$
+	  
 \begin{align}
-	C^{(2)} &= \avgsum[i, n] (a_i^{(2)} - y_i)^2 \\
-	\pd[w^{(2)}]C^{(2)}  
-		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) a_i^{(1)} \\
-	\pd[b^{(2)}]C^{(2)}  
-		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) \\
-	\pd[a^{(1)}]C^{(2)}  
-		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) w^{(2)} \\
-	C^{(1)} &= \avgsum[i, n] (a_i^{(1)} - (a_i^{(1)} - \pd[a_i^{(1)}]C^{(2)}))^2 \\
-	\pd[w^{(1)}]C^{(1)}  
-		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) a_i^{(0)} \\
-	\pd[b^{(1)}]C^{(1)}  
-		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) \\
+	C^{(l)} &= \avgsum[i, n] (a_i^{(l)} - (a_i^{(l)} - \pd[a_i^{(l)}]C^{(l+1)}))^2 \\
+	\pd[w^{(l)}]C^{(l)}  
+		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) a_i^{(0)} \\
+	\pd[b^{(l)}]C^{(l)}  
+		&= \avgsum[i, n] 2(\pd[a_i^{(l)}]C^{(l+1)}) \\
+	\pd[a^{(l-1)}]C^{(2)}  
+		&= \avgsum[i, n] 2(a_i^{(l)} - y_i) a_i^{(l)}(1 - a_i^{(l)}) w^{(l)} \\
 \end{align}
 
 \end{document}
