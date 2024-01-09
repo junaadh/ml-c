@@ -3,10 +3,12 @@
 set -xe
 doc="--doc"
 
-if [ $1 == "$doc" ]; then
+if [ "$1" = "$doc" ]; then
   mkdir -p doc/
+  mkdir -p build/temp
 
-  pdflatex -halt-on-error -output-directory doc src/doc/grad.tex
+  pdflatex -halt-on-error -output-directory=doc src/doc/grad.tex
+  mv doc/*.log doc/*.aux build/temp
 else
   mkdir -p build/prev
   

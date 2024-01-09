@@ -3,6 +3,8 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 
+\allowdisplaybreaks
+
 \begin{document}
 
 \section{Gradient Descent}
@@ -28,7 +30,9 @@
 \begin{align}
 	C(w)  &= \avgsum[1,n](x_iw - y_i)^2 \\  
 	C'(w) &= \avgsum[1,n]2(x_iw - y_i)x_i' \\
+	\displaybreak
 \end{align}
+
 
 \subsection{One neuron model}
 
@@ -120,6 +124,7 @@
 	\pd[b]C 
 		&= \avgsum[i,n]2(a_i - z_i)\pd[b]a_i \\
 		&= \avgsum[i,n]2(a_i - z_i)(a_i(1 - a_i)) \\
+	\displaybreak
 \end{align}
 
 \subsection{Two Neuron Model with 1 input}
@@ -178,7 +183,41 @@
 		&= \avgsum[i, n] 2(a_i^{(1)} - a_i^{(1)} + \pd[a_i^{(1)}]C^{(2)})\pd[w^{(1)}]a_i^{(1)} \\
 		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) a_i^{(0)} \\
 	\pd[b^{(1)}]C^(1)  
-		&= \\
+		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) \\
+	\displaybreak
+\end{align}
+
+\subsection{Arbitrary Neurons Model with 1 input}
+
+\subsubsection{Feed-Forward}
+
+Assuming $a_i^{(0)}$ = $x_i$
+
+\begin{align}
+	a_i^{(l)} &= \sigma\left(a_i^{(l-1)}w^{(l)} + b^{(l)}\right) \\
+	\pd[w^{(l)}]a_i^{(l)} 
+		&= a_i^{(l)}(1 - a_i^{(l)}) a_i^{(l-1)} \\	
+	\pd[b^{(l)}]a_i^{(l)} 
+		&= a_i^{(l)}(1 - a_i^{(l)}) \\	
+	\pd[a^{(l-1)}]a_i^{(l)} 
+		&= a_i^{(l)}(1 - a_i^{(l)})w^{(l)} \\	
+\end{align}
+
+\subsubsection{Back-Propagation}
+
+\begin{align}
+	C^{(2)} &= \avgsum[i, n] (a_i^{(2)} - y_i)^2 \\
+	\pd[w^{(2)}]C^{(2)}  
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) a_i^{(1)} \\
+	\pd[b^{(2)}]C^{(2)}  
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) \\
+	\pd[a^{(1)}]C^{(2)}  
+		&= \avgsum[i, n] 2(a_i^{(2)} - y_i) a_i^{(2)}(1 - a_i^{(2)}) w^{(2)} \\
+	C^{(1)} &= \avgsum[i, n] (a_i^{(1)} - (a_i^{(1)} - \pd[a_i^{(1)}]C^{(2)}))^2 \\
+	\pd[w^{(1)}]C^{(1)}  
+		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) a_i^{(0)} \\
+	\pd[b^{(1)}]C^{(1)}  
+		&= \avgsum[i, n] 2(\pd[a_i^{(1)}]C^{(2)}) \\
 \end{align}
 
 \end{document}
