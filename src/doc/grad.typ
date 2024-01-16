@@ -1,5 +1,7 @@
 #set heading(numbering: "1.1")
 
+#import "@preview/fletcher:0.3.0" as fletcher: node, edge
+
 #let avgsum(char1, char2) = $ 1/#char2 sum_(#char1=1)^#char2 $
 #let pd(char) = $ \u{2202}_#char $
 
@@ -28,6 +30,14 @@ $
 
 == One neuron model with 1 input
 
-  #circle[
-    $sigma$
-  ]
+  #fletcher.diagram(
+    node((-1,0), $x$),
+    /* edge((-1,0), (0,0)), */
+    node((0,0), $sigma w b$, shape: "circle"),
+    /* edge((0,0), (1,0)), */
+    node((1,0), 0), $y$)
+  )
+
+  $
+   y = mx + c
+  $
